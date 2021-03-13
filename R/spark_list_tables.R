@@ -18,11 +18,11 @@
 #' \dontrun{
 #' sc <- sparklyr::spark_connect(master = "local")
 #' mtcars_spakr <- sparklyr::copy_to(dest = sc, df = mtcars)
-#' spark_list_tables(sc = sc)
+#' catalog_list_tables(sc = sc)
 #' }
 #'
 #' @export
-spark_list_tables <- function(sc, database = NULL) {
+catalog_list_tables <- function(sc, database = NULL) {
   catalog <- spark_catalog(sc)
   tables <- if (!is.null(database)) {
     sparklyr::invoke(catalog, "listTables", database)
