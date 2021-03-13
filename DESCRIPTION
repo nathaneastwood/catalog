@@ -1,7 +1,7 @@
 Package: catalog
 Type: Package
 Title: Access the Spark Catalog API via 'sparklyr'
-Version: 0.0.8
+Version: 0.0.9
 Authors@R: person("Nathan", "Eastwood", "", "nathan.eastwood@icloud.com",
     role = c("aut", "cre"))
 Maintainer: Nathan Eastwood <nathan.eastwood@icloud.com>
