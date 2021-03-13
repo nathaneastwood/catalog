@@ -1,4 +1,4 @@
-Package: argos
+Package: catalog
 Type: Package
 Title: Access The Spark Catalog API Via 'sparklyr'
 Version: 0.0.4
@@ -6,8 +6,8 @@ Authors@R: person("Nathan", "Eastwood", "", "nathan.eastwood@icloud.com",
     role = c("aut", "cre"))
 Maintainer: Nathan Eastwood <nathan.eastwood@icloud.com>
 Description: Gain access to the Spark catalog API making use of the 'sparklyr' API.
-URL: https://nathaneastwood.github.io/argos/, https://github.com/nathaneastwood/argos
-BugReports: https://github.com/nathaneastwood/argos/issues
+URL: https://nathaneastwood.github.io/catalog/, https://github.com/nathaneastwood/catalog
+BugReports: https://github.com/nathaneastwood/catalog/issues
 Depends: R (>= 3.5)
 Suggests:
     knitr,

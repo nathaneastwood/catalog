@@ -2,7 +2,7 @@
 #'
 #' Returns the current database in this session. By default your session will be
 #' connected to the "default" database (named "default") and to change database
-#' you can use [catalog_set_current_database()].
+#' you can use [set_current_database()].
 #'
 #' @param sc A `spark_connection`.
 #'
@@ -12,16 +12,15 @@
 #' @examples
 #' \dontrun{
 #' sc <- sparklyr::spark_connect(master = "local")
-#' catalog_current_database(sc = sc)
+#' current_database(sc = sc)
 #' }
 #'
 #' @seealso
-#' [catalog_set_current_database()], [catalog_database_exists()],
-#' [catalog_list_databases()]
+#' [set_current_database()], [database_exists()], [list_databases()]
 #'
 #' @importFrom sparklyr invoke
 #' @export
-catalog_current_database <- function(sc) {
+current_database <- function(sc) {
   invoke_catalog(sc = sc, method = "currentDatabase")
 }
 
@@ -40,13 +39,12 @@ catalog_current_database <- function(sc) {
 #' @examples
 #' \dontrun{
 #' sc <- sparklyr::spark_connect(master = "local")
-#' catalog_database_exists(sc = sc, name = "default")
-#' catalog_database_exists(sc = sc, name = "fake_database")
+#' database_exists(sc = sc, name = "default")
+#' database_exists(sc = sc, name = "fake_database")
 #' }
 #'
 #' @seealso
-#' [catalog_current_database()], [catalog_set_current_database()],
-#' [catalog_list_databases()]
+#' [current_database()], [set_current_database()], [list_databases()]
 #'
 #' @return
 #' A `logical(1)` vector indicating `TRUE` if the database exists and `FALSE`
@@ -54,36 +52,9 @@ catalog_current_database <- function(sc) {
 #'
 #' @importFrom sparklyr invoke
 #' @export
-catalog_database_exists <- function(sc, name) {
+database_exists <- function(sc, name) {
   check_character_one(x = name)
   invoke_catalog(sc = sc, method = "databaseExists", name)
-}
-
-#' Set The Current Database
-#'
-#' Sets the current default database in this session.
-#'
-#' @param sc A `spark_connection`.
-#' @param name `character(1)`. The name of the database to set the current
-#' database to.
-#'
-#' @examples
-#' \dontrun{
-#' sc <- sparklyr::spark_connect(master = "local")
-#' catalog_set_current_database(sc = sc, name = "new_db")
-#' }
-#'
-#' @seealso
-#' [catalog_current_database()], [catalog_database_exists()],
-#' [catalog_list_databases()]
-#'
-#' @importFrom sparklyr invoke
-#' @export
-catalog_set_current_database <- function(sc, name) {
-  check_character_one(x = name)
-  db_exists <- catalog_database_exists(sc = sc, name = name)
-  if (isFALSE(db_exists)) stop("Database ", sQuote(name), " does not exist.")
-  invoke_catalog(sc = sc, method = "setCurrentDatabase", name)
 }
 
 #' List Databases
@@ -100,17 +71,42 @@ catalog_set_current_database <- function(sc, name) {
 #' * `locationUri` - Path (in the form of a uri) to data files.
 #'
 #' @seealso
-#' [catalog_current_database()], [catalog_database_exists()],
-#' [catalog_set_current_database()]
+#' [current_database()], [database_exists()], [set_current_database()]
 #'
 #' @examples
 #' \dontrun{
 #' sc <- sparklyr::spark_connect(master = "local")
-#' catalog_list_databases(sc = sc)
+#' list_databases(sc = sc)
 #' }
 #'
 #' @export
-catalog_list_databases <- function(sc) {
+list_databases <- function(sc) {
   databases <- invoke_catalog(sc = sc, method = "listDatabases")
   sparklyr::collect(x = databases)
+}
+
+#' Set The Current Database
+#'
+#' Sets the current default database in this session.
+#'
+#' @param sc A `spark_connection`.
+#' @param name `character(1)`. The name of the database to set the current
+#' database to.
+#'
+#' @examples
+#' \dontrun{
+#' sc <- sparklyr::spark_connect(master = "local")
+#' set_current_database(sc = sc, name = "new_db")
+#' }
+#'
+#' @seealso
+#' [current_database()], [database_exists()], [list_databases()]
+#'
+#' @importFrom sparklyr invoke
+#' @export
+set_current_database <- function(sc, name) {
+  check_character_one(x = name)
+  db_exists <- database_exists(sc = sc, name = name)
+  if (isFALSE(db_exists)) stop("Database ", sQuote(name), " does not exist.")
+  invoke_catalog(sc = sc, method = "setCurrentDatabase", name)
 }

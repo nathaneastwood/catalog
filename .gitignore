@@ -11,7 +11,7 @@ cran-comments.md
 *.Rproj
 README.html
 .vscode/
-argos.code-workspace
+catalog.code-workspace
 docs
 inst/doc
 revdep

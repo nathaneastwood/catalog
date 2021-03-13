@@ -1,21 +1,20 @@
 #' Cache And Uncache Tables
 #'
 #' Spark SQL can cache tables using an in-memory columnar format by calling
-#' `catalog_cache_table(sc, "tableName")`. Spark SQL will scan only required
-#' columns and will automatically tune compression to minimize memory usage and
-#' GC pressure. You can call `catalog_uncache_table(sc, "tableName")` to remove
-#' the table from memory. Similarly you can call `catalog_clear_cache(sc)` to
-#' remove all cached tables from the in-memory cache.
+#' `cache_table()`. Spark SQL will scan only required columns and will
+#' automatically tune compression to minimize memory usage and GC pressure.
+#' You can call `uncache_table()` to remove the table from memory. Similarly you
+#' can call `clear_cache()` to remove all cached tables from the in-memory
+#' cache. Finally, use `is_cached()` to test whether or not a table is cached.
 #'
-#' @inheritParams catalog_get_table
+#' @inheritParams get_table
 #'
 #' @seealso
-#' [catalog_create_table()], [catalog_get_table()], [catalog_list_tables()],
-#' [catalog_refresh_table()], [catalog_table_exists()],
-#' [catalog_uncache_table()]
+#' [create_table()], [get_table()], [list_tables()], [refresh_table()],
+#' [table_exists()], [uncache_table()]
 #'
 #' @return
-#' * `catalog_cache_table()`: `NULL`, invisibly.
+#' * `cache_table()`: `NULL`, invisibly.
 #'
 #' @examples
 #' \dontrun{
@@ -23,22 +22,30 @@
 #' mtcars_spark <- sparklyr::copy_to(dest = sc, df = mtcars)
 #'
 #' # By default the table is not cached
-#' catalog_is_cached(sc = sc, table = "mtcars")
+#' is_cached(sc = sc, table = "mtcars")
 #'
 #' # We can manually cache the table
-#' catalog_cache_table(sc = sc, table = "mtcars")
+#' cache_table(sc = sc, table = "mtcars")
 #' # And now the table is cached
-#' catalog_is_cached(sc = sc, table = "mtcars")
+#' is_cached(sc = sc, table = "mtcars")
 #'
 #' # We can uncache the table
-#' catalog_uncache_table(sc = sc, table = "mtcars")
-#' catalog_is_cached(sc = sc, table = "mtcars")
+#' uncache_table(sc = sc, table = "mtcars")
+#' is_cached(sc = sc, table = "mtcars")
 #' }
 #'
 #' @export
-catalog_cache_table <- function(sc, table) {
+cache_table <- function(sc, table) {
   check_character_one(x = table)
   invisible(invoke_catalog(sc = sc, method = "cacheTable", table))
+}
+
+#' @return
+#' * `clear_cache()`: `NULL`, invisibly.
+#' @rdname cache_table
+#' @export
+clear_cache <- function(sc) {
+  invisible(invoke_catalog(sc = sc, method = "clearCache"))
 }
 
 #' Create A Table
@@ -58,7 +65,7 @@ catalog_cache_table <- function(sc, table) {
 #' config[["spark.sql.sources.default"]] <- "csv"
 #' ```
 #'
-#' @inheritParams catalog_get_table
+#' @inheritParams get_table
 #' @param table `character(1)`. The name of the table to create.
 #' @param path `character(1)`. The path to use to create the table.
 #' @param source `character(1)`. The data source to use to create the table such
@@ -66,12 +73,11 @@ catalog_cache_table <- function(sc, table) {
 #' @param ... Additional options to be passed to the `createTable` method.
 #'
 #' @seealso
-#' [catalog_cache_table()], [catalog_get_table()], [catalog_list_tables()],
-#' [catalog_refresh_table()], [catalog_table_exists()],
-#' [catalog_uncache_table()]
+#' [cache_table()], [get_table()], [list_tables()], [refresh_table()],
+#' [table_exists()], [uncache_table()]
 #'
 #' @export
-catalog_create_table <- function(sc, table, path, source, ...) {
+create_table <- function(sc, table, path, source, ...) {
   check_character_one(table)
   check_character_one(path)
   check_character_one(source)
@@ -95,16 +101,15 @@ catalog_create_table <- function(sc, table, path, source, ...) {
 #' functions should be listed (default: `NULL`).
 #'
 #' @seealso
-#' [catalog_cache_table()], [catalog_create_table()], [catalog_list_tables()],
-#' [catalog_refresh_table()], [catalog_table_exists()],
-#' [catalog_uncache_table()]
+#' [cache_table()], [create_table()], [list_tables()], [refresh_table()],
+#' [table_exists()], [uncache_table()]
 #'
 #' @export
-catalog_get_table <- function(sc, table, database = NULL) {
+get_table <- function(sc, table, database = NULL) {
   check_character_one(table)
   if (!is.null(database)) {
     check_character_one(database)
-    db_exists <- catalog_database_exists(sc = sc, name = database)
+    db_exists <- database_exists(sc = sc, name = database)
     if (isFALSE(db_exists)) {
       stop("Database ", sQuote(database), " does not exist.")
     }
@@ -114,13 +119,23 @@ catalog_get_table <- function(sc, table, database = NULL) {
   }
 }
 
+#' @return
+#' * `is_cached()`: A `logical(1)` vector indicating `TRUE` if the table is
+#' cached and `FALSE` otherwise.
+#' @rdname cache_table
+#' @export
+is_cached <- function(sc, table) {
+  check_character_one(x = table)
+  invoke_catalog(sc = sc, method = "isCached", table)
+}
+
 #' List Tables In A Spark Connection
 #'
 #' Returns a list of tables/views in the current database. The result includes
 #' the name, database, description, table type and whether the table is
 #' temporary or not.
 #'
-#' @inheritParams catalog_get_table
+#' @inheritParams get_table
 #'
 #' @return
 #' A `tibble` containing 5 columns:
@@ -134,17 +149,16 @@ catalog_get_table <- function(sc, table, database = NULL) {
 #' \dontrun{
 #' sc <- sparklyr::spark_connect(master = "local")
 #' mtcars_spakr <- sparklyr::copy_to(dest = sc, df = mtcars)
-#' catalog_list_tables(sc = sc)
+#' list_tables(sc = sc)
 #' }
 #'
 #' @seealso
-#' [catalog_cache_table()], [catalog_create_table()], [catalog_get_table()],
-#' [catalog_refresh_table()], [catalog_table_exists()],
-#' [catalog_uncache_table()]
+#' [cache_table()], [create_table()], [get_table()], [refresh_table()],
+#' [table_exists()], [uncache_table()]
 #'
 #' @importFrom sparklyr collect
 #' @export
-catalog_list_tables <- function(sc, database = NULL) {
+list_tables <- function(sc, database = NULL) {
   tables <- if (!is.null(database)) {
     invoke_catalog(sc = sc, method = "listTables", database)
   } else {
@@ -163,17 +177,17 @@ catalog_list_tables <- function(sc, database = NULL) {
 #' `InMemoryRelation`, drop the original cached version and make the new version
 #' cached lazily.
 #'
-#' @inheritParams catalog_get_table
+#' @inheritParams get_table
 #'
 #' @seealso
-#' [catalog_cache_table()], [catalog_create_table()], [catalog_get_table()],
-#' [catalog_list_tables()], [catalog_table_exists()], [catalog_uncache_table()]
+#' [cache_table()], [create_table()], [get_table()], [list_tables()],
+#' [table_exists()], [uncache_table()]
 #'
 #' @return
 #' `NULL`
 #'
 #' @export
-catalog_refresh_table <- function(sc, table) {
+refresh_table <- function(sc, table) {
   check_character_one(table)
   invoke_catalog(sc = sc, method = "refreshTable", table)
 }
@@ -183,33 +197,33 @@ catalog_refresh_table <- function(sc, table) {
 #' Check if the table or view with the specified name exists in the specified
 #' database. This can either be a temporary view or a table/view.
 #'
-#' @inheritParams catalog_get_table
+#' @inheritParams get_table
 #'
 #' @details
-#' If `database` is `NULL`, `catalog_table_exists` refers to a table in the
-#' current database (see [catalog_current_database()]).
+#' If `database` is `NULL`, `table_exists` refers to a table in the current
+#' database (see [current_database()]).
 #'
 #' @examples
 #' \dontrun{
 #' sc <- sparklyr::spark_connect(master = "local")
 #' mtcars_spark <- sparklyr::copy_to(dest = sc, df = mtcars)
-#' catalog_table_exists(sc = sc, table = "mtcars")
+#' table_exists(sc = sc, table = "mtcars")
 #' }
 #'
 #' @seealso
-#' [catalog_cache_table()], [catalog_create_table()], [catalog_get_table()],
-#' [catalog_list_tables()], [catalog_refresh_table()], [catalog_uncache_table()]
+#' [cache_table()], [create_table()], [get_table()], [list_tables()],
+#' [refresh_table()], [uncache_table()]
 #'
 #' @return
 #' A `logical(1)` vector indicating `TRUE` if the table exists within the
 #' specified database and `FALSE` otherwise.
 #'
 #' @export
-catalog_table_exists <- function(sc, table, database = NULL) {
+table_exists <- function(sc, table, database = NULL) {
   check_character_one(table)
   if (!is.null(database)) {
     check_character_one(database)
-    db_exists <- catalog_database_exists(sc = sc, name = database)
+    db_exists <- database_exists(sc = sc, name = database)
     if (isFALSE(db_exists)) {
       stop("Database ", sQuote(database), " does not exist.")
     }
@@ -220,28 +234,10 @@ catalog_table_exists <- function(sc, table, database = NULL) {
 }
 
 #' @return
-#' * `catalog_uncache_table()`: `NULL`, invisibly.
-#' @rdname catalog_cache_table
+#' * `uncache_table()`: `NULL`, invisibly.
+#' @rdname cache_table
 #' @export
-catalog_uncache_table <- function(sc, table) {
+uncache_table <- function(sc, table) {
   check_character_one(x = table)
   invisible(invoke_catalog(sc = sc, method = "uncacheTable", table))
-}
-
-#' @return
-#' * `catalog_clear_cache()`: `NULL`, invisibly.
-#' @rdname catalog_cache_table
-#' @export
-catalog_clear_cache <- function(sc) {
-  invisible(invoke_catalog(sc = sc, method = "clearCache"))
-}
-
-#' @return
-#' * `catalog_is_cached()`: A `logical(1)` vector indicating `TRUE` if the table
-#' is cached and `FALSE` otherwise.
-#' @rdname catalog_cache_table
-#' @export
-catalog_is_cached <- function(sc, table) {
-  check_character_one(x = table)
-  invoke_catalog(sc = sc, method = "isCached", table)
 }

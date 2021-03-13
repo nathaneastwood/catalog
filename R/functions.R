@@ -4,10 +4,10 @@
 #' database.
 #'
 #' @details
-#' `catalog_function_exists()` includes in-built functions such as `abs`. To see
-#' if a built-in function exists you must use the unqualified name. If you
-#' create a function you can use the qualified name. If you want to check if a
-#' built-in function exists specify the `database` as `NULL`.
+#' `function_exists()` includes in-built functions such as `abs`. To see if a
+#' built-in function exists you must use the unqualified name. If you create a
+#' function you can use the qualified name. If you want to check if a built-in
+#' function exists specify the `database` as `NULL`.
 #'
 #' @param sc A `spark_connection`.
 #' @param fn `character(1)`. The name of the function.
@@ -21,15 +21,15 @@
 #' @examples
 #' \dontrun{
 #' sc <- sparklyr::spark_connect(master = "local")
-#' catalog_function_exists(sc = sc, fn = "abs")
+#' function_exists(sc = sc, fn = "abs")
 #' }
 #'
 #' @export
-catalog_function_exists <- function(sc, fn, database = NULL) {
+function_exists <- function(sc, fn, database = NULL) {
   check_character_one(fn)
   if (!is.null(database)) {
     check_character_one(database)
-    db_exists <- catalog_database_exists(sc = sc, name = database)
+    db_exists <- database_exists(sc = sc, name = database)
     if (isFALSE(db_exists)) {
       stop("Database ", sQuote(database), " does not exist.")
     }
@@ -47,7 +47,7 @@ catalog_function_exists <- function(sc, fn, database = NULL) {
 #' If you are trying to get an in-built function then use the unqualified name
 #' and pass `NULL` as the `database` name.
 #'
-#' @inheritParams catalog_function_exists
+#' @inheritParams function_exists
 #'
 #' @return
 #' A `spark_jobj` which includes the class name, database, description, whether
@@ -56,18 +56,18 @@ catalog_function_exists <- function(sc, fn, database = NULL) {
 #' @examples
 #' \dontrun{
 #' sc <- sparklyr::spark_connect(master = "local")
-#' catalog_get_function(sc = sc, fn = "Not")
+#' get_function(sc = sc, fn = "Not")
 #' }
 #'
 #' @seealso
-#' [catalog_function_exists()], [catalog_list_functions()]
+#' [function_exists()], [list_functions()]
 #'
 #' @export
-catalog_get_function <- function(sc, fn, database = NULL) {
+get_function <- function(sc, fn, database = NULL) {
   check_character_one(fn)
   if (!is.null(database)) {
     check_character_one(database)
-    db_exists <- catalog_database_exists(sc = sc, name = database)
+    db_exists <- database_exists(sc = sc, name = database)
     if (isFALSE(db_exists)) {
       stop("Database ", sQuote(database), " does not exist.")
     }
@@ -83,7 +83,7 @@ catalog_get_function <- function(sc, fn, database = NULL) {
 #' includes all temporary functions. The result contains the class name,
 #' database, description, whether it is temporary and the name of each function.
 #'
-#' @inheritParams catalog_function_exists
+#' @inheritParams function_exists
 #'
 #' @return
 #' A `tibble` containing 5 columns:
@@ -96,19 +96,19 @@ catalog_get_function <- function(sc, fn, database = NULL) {
 #' @examples
 #' \dontrun{
 #' sc <- sparklyr::spark_connect(master = "local")
-#' catalog_list_functions(sc = sc)
-#' catalog_list_functions(sc = sc, database = "default")
+#' list_functions(sc = sc)
+#' list_functions(sc = sc, database = "default")
 #' }
 #'
 #' @seealso
-#' [catalog_function_exists()], [catalog_get_function()]
+#' [function_exists()], [get_function()]
 #'
 #' @importFrom sparklyr collect
 #' @export
-catalog_list_functions <- function(sc, database = NULL) {
+list_functions <- function(sc, database = NULL) {
   functions <- if (!is.null(database)) {
     check_character_one(database)
-    db_exists <- catalog_database_exists(sc = sc, name = database)
+    db_exists <- database_exists(sc = sc, name = database)
     if (isFALSE(db_exists)) {
       stop("Database ", sQuote(database), " does not exist.")
     }
