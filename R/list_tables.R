@@ -21,13 +21,13 @@
 #' catalog_list_tables(sc = sc)
 #' }
 #'
+#' @importFrom sparklyr collect
 #' @export
 catalog_list_tables <- function(sc, database = NULL) {
-  catalog <- spark_catalog(sc)
   tables <- if (!is.null(database)) {
-    sparklyr::invoke(catalog, "listTables", database)
+    invoke_catalog(sc = sc, method = "listTables", database)
   } else {
-    sparklyr::invoke(catalog, "listTables")
+    invoke_catalog(sc = sc, method = "listTables")
   }
   sparklyr::collect(tables)
 }
