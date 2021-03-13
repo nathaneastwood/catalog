@@ -50,4 +50,6 @@ list_tables(sc)
 list_columns(sc, "mtcars")
 
 list_functions(sc)
+
+drop_temp_view(sc, "mtcars")
 ```

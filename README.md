@@ -76,4 +76,7 @@ list_functions(sc)
 #  9 <=    <NA>     <NA>        org.apache.spark.sql.catalyst.express… TRUE       
 # 10 <=>   <NA>     <NA>        org.apache.spark.sql.catalyst.express… TRUE       
 # # … with 288 more rows
+
+drop_temp_view(sc, "mtcars")
+# [1] TRUE
 ```
