@@ -1,0 +1,53 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# {catalog}
+
+[![CRAN status](https://www.r-pkg.org/badges/version/catalog)](https://cran.r-project.org/package=catalog)
+[![Dependencies](https://tinyverse.netlify.com/badge/catalog)](https://cran.r-project.org/package=catalog)
+![CRAN downloads](https://cranlogs.r-pkg.org/badges/catalog)
+[![codecov](https://codecov.io/gh/nathaneastwood/catalog/branch/master/graph/badge.svg)](https://codecov.io/gh/nathaneastwood/catalog)
+
+## Overview
+
+{catalog} gives the user access to the Spark Catalog API making use of the 'sparklyr' API. Catalog is the interface for managing a metastore (aka metadata catalog) of relational entities (e.g. database(s), tables, functions, table columns and temporary views).
+
+## Installation
+
+You can install:
+
+* the development version from [GitHub](https://github.com/nathaneastwood/catalog) with
+
+```{r installation, eval = FALSE}
+# install.packages("remotes")
+remotes::install_github("nathaneastwood/catalog")
+```
+
+## Usage
+
+{catalog} provides an API matching that of the Catalog API and provides full access to all methods. Below is a small example of some of the functionality.
+
+```{r spark_setup}
+sc <- sparklyr::spark_connect(master = "local")
+mtcars_spark <- sparklyr::copy_to(dest = sc, df = mtcars)
+
+library(catalog)
+
+list_tables(sc)
+
+list_columns(sc, "mtcars")
+
+list_functions(sc)
+```
