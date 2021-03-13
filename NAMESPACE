@@ -2,7 +2,10 @@
 
 export(catalog_current_database)
 export(catalog_database_exists)
+export(catalog_function_exists)
+export(catalog_get_function)
 export(catalog_list_databases)
+export(catalog_list_functions)
 export(catalog_list_tables)
 export(catalog_set_current_database)
 importFrom(sparklyr,collect)
