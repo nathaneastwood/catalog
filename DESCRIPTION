@@ -1,7 +1,7 @@
 Package: catalog
 Type: Package
-Title: Access The Spark Catalog API Via 'sparklyr'
-Version: 0.0.4
+Title: Access the Spark Catalog API via 'sparklyr'
+Version: 0.0.5
 Authors@R: person("Nathan", "Eastwood", "", "nathan.eastwood@icloud.com",
     role = c("aut", "cre"))
 Maintainer: Nathan Eastwood <nathan.eastwood@icloud.com>
@@ -9,6 +9,8 @@ Description: Gain access to the Spark catalog API making use of the 'sparklyr' A
 URL: https://nathaneastwood.github.io/catalog/, https://github.com/nathaneastwood/catalog
 BugReports: https://github.com/nathaneastwood/catalog/issues
 Depends: R (>= 3.5)
+Imports:
+    sparklyr
 Suggests:
     knitr,
     pkgdown,

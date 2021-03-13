@@ -76,6 +76,9 @@ clear_cache <- function(sc) {
 #' [cache_table()], [get_table()], [list_tables()], [refresh_table()],
 #' [table_exists()], [uncache_table()]
 #'
+#' @return
+#' A `tbl_spark`.
+#'
 #' @export
 create_table <- function(sc, table, path, source, ...) {
   check_character_one(table)

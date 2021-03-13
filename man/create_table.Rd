@@ -18,6 +18,9 @@ as \code{"parquet"}, \code{"csv"}, etc.}
 
 \item{...}{Additional options to be passed to the \code{createTable} method.}
 }
+\value{
+A \code{tbl_spark}.
+}
 \description{
 Creates a table, in the hive warehouse, from the given path and returns the
 corresponding \code{DataFrame}. The table will contain the contents of the file
