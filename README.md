@@ -9,10 +9,10 @@ status](https://www.r-pkg.org/badges/version/catalog)](https://cran.r-project.or
 
 ## Overview
 
-{catalog} gives the user access to the Spark Catalog API making use of
-the ‘sparklyr’ API.
+{catalog} gives the user access to the Spark
 [Catalog](https://spark.apache.org/docs/2.4.3/api/java/org/apache/spark/sql/catalog/Catalog.html)
-is the interface for managing a metastore (aka metadata catalog) of
+API making use of the [{sparklyr}](https://sparklyr.ai) API. Catalog is
+the interface for managing a metastore (aka metadata catalog) of
 relational entities (e.g. database(s), tables, functions, table columns
 and temporary views).
 
@@ -81,3 +81,6 @@ list_functions(sc)
 drop_temp_view(sc, "mtcars")
 # [1] TRUE
 ```
+
+For more information, please refer to the [package
+website](https://nathaneastwood.github.io/catalog/).
