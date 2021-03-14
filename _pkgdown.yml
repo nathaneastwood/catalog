@@ -1,0 +1,58 @@
+reference:
+- title: Caching
+  contents:
+  - cache_table
+  - clear_cache
+  - is_cached
+  - refresh_by_path
+  - refresh_table
+  - uncache_table
+
+- title: Columns
+  contents:
+  - list_columns
+
+- title: Database
+  contents:
+  - current_database
+  - database_exists
+  - list_databases
+  - set_current_database
+
+- title: Functions
+  contents:
+  - function_exists
+  - get_function
+  - list_functions
+
+- title: Partitioning
+  contents:
+  - recover_partitions
+
+- title: Tables
+  contents:
+  - create_table
+  - get_table
+  - list_tables
+  - table_exists
+
+- title: Temporary Views
+  contents:
+  - drop_global_temp_view
+  - drop_temp_view
+
+navbar:
+  type: inverse
+  left:
+    - icon: fa-home
+      href: index.html
+    - icon: fa-newspaper-o
+      text: "News"
+      href: news/index.html
+    - icon: fa-file-code-o
+      text: "Functions"
+      href: reference/index.html
+
+authors:
+  Nathan Eastwood:
+    href: https://nathaneastwood.github.io
