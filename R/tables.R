@@ -14,7 +14,7 @@
 #' [table_exists()], [uncache_table()]
 #'
 #' @return
-#' * `cache_table()`: `NULL`, invisibly.
+#' * `cache_table()`: If successful, `TRUE`, otherwise `FALSE`.
 #'
 #' @examples
 #' \dontrun{
@@ -37,7 +37,17 @@
 #' @export
 cache_table <- function(sc, table) {
   check_character_one(x = table)
-  invisible(invoke_catalog(sc = sc, method = "cacheTable", table))
+  if (!table_exists(sc = sc, table = table)) {
+    stop(sQuote(table), " does not exist")
+  }
+  if (is_cached(sc = sc, table = table)) {
+    message(
+      sQuote(table), " is already cached. Maybe you want `refresh_table()`?"
+    )
+    return(FALSE)
+  }
+  invoke_catalog(sc = sc, method = "cacheTable", table)
+  is_cached(sc = sc, table = table)
 }
 
 #' @return
@@ -79,17 +89,14 @@ clear_cache <- function(sc) {
 #' @return
 #' A `tbl_spark`.
 #'
+#' @importFrom dplyr tbl
 #' @export
 create_table <- function(sc, table, path, source, ...) {
   check_character_one(table)
   check_character_one(path)
   check_character_one(source)
-  table <- invoke_catalog(
-    sc = sc,
-    method = "createTable",
-    table, path, source, ...
-  )
-  sparklyr::collect(table)
+  invoke_catalog(sc = sc, method = "createTable", table, path, source, ...)
+  dplyr::tbl(src = sc, table)
 }
 
 #' Get A Table
@@ -242,5 +249,13 @@ table_exists <- function(sc, table, database = NULL) {
 #' @export
 uncache_table <- function(sc, table) {
   check_character_one(x = table)
-  invisible(invoke_catalog(sc = sc, method = "uncacheTable", table))
+  if (!table_exists(sc = sc, table = table)) {
+    stop(sQuote(table), " does not exist")
+  }
+  if (!is_cached(sc = sc, table = table)) {
+    message(sQuote(table), " is not cached.")
+    return(FALSE)
+  }
+  invoke_catalog(sc = sc, method = "uncacheTable", table)
+  !is_cached(sc = sc, table = table)
 }

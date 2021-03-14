@@ -18,11 +18,10 @@ knitr::opts_chunk$set(
 [![CRAN status](https://www.r-pkg.org/badges/version/catalog)](https://cran.r-project.org/package=catalog)
 [![Dependencies](https://tinyverse.netlify.com/badge/catalog)](https://cran.r-project.org/package=catalog)
 ![CRAN downloads](https://cranlogs.r-pkg.org/badges/catalog)
-[![codecov](https://codecov.io/gh/nathaneastwood/catalog/branch/master/graph/badge.svg)](https://codecov.io/gh/nathaneastwood/catalog)
 
 ## Overview
 
-{catalog} gives the user access to the Spark Catalog API making use of the 'sparklyr' API. Catalog is the interface for managing a metastore (aka metadata catalog) of relational entities (e.g. database(s), tables, functions, table columns and temporary views).
+{catalog} gives the user access to the Spark Catalog API making use of the 'sparklyr' API. [Catalog](https://spark.apache.org/docs/2.4.3/api/java/org/apache/spark/sql/catalog/Catalog.html) is the interface for managing a metastore (aka metadata catalog) of relational entities (e.g. database(s), tables, functions, table columns and temporary views).
 
 ## Installation
 

@@ -102,6 +102,9 @@ list_databases <- function(sc) {
 #' @seealso
 #' [current_database()], [database_exists()], [list_databases()]
 #'
+#' @return
+#' If successful, `TRUE`, otherwise errors.
+#'
 #' @importFrom sparklyr invoke
 #' @export
 set_current_database <- function(sc, name) {
@@ -109,4 +112,5 @@ set_current_database <- function(sc, name) {
   db_exists <- database_exists(sc = sc, name = name)
   if (isFALSE(db_exists)) stop("Database ", sQuote(name), " does not exist.")
   invoke_catalog(sc = sc, method = "setCurrentDatabase", name)
+  if (current_database(sc = sc) == name) TRUE else FALSE
 }

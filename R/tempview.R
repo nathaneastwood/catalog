@@ -39,5 +39,9 @@ drop_global_temp_view <- function(sc, view) {
 #' @export
 drop_temp_view <- function(sc, view) {
   check_character_one(x = view)
+  if (!table_exists(sc = sc, table = view)) {
+    message(sQuote(x = view), " does not exist.")
+    return(FALSE)
+  }
   invoke_catalog(sc = sc, method = "dropTempView", view)
 }

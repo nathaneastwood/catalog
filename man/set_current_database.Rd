@@ -12,6 +12,9 @@ set_current_database(sc, name)
 \item{name}{\code{character(1)}. The name of the database to set the current
 database to.}
 }
+\value{
+If successful, \code{TRUE}, otherwise errors.
+}
 \description{
 Sets the current default database in this session.
 }

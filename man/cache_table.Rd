@@ -22,7 +22,7 @@ uncache_table(sc, table)
 }
 \value{
 \itemize{
-\item \code{cache_table()}: \code{NULL}, invisibly.
+\item \code{cache_table()}: If successful, \code{TRUE}, otherwise \code{FALSE}.
 }
 
 \itemize{
