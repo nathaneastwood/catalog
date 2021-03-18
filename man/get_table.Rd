@@ -14,6 +14,9 @@ get_table(sc, table, database = NULL)
 \item{database}{\code{character(1)}. The name of the database for which the
 functions should be listed (default: \code{NULL}).}
 }
+\value{
+An object of class \code{spark_jobj} and \code{shell_jobj}.
+}
 \description{
 Get the table or view with the specified name in the specified database. You
 can use this to find the table's description, database, type and whether it

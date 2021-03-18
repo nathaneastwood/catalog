@@ -114,6 +114,9 @@ create_table <- function(sc, table, path, source, ...) {
 #' [cache_table()], [create_table()], [list_tables()], [refresh_table()],
 #' [table_exists()], [uncache_table()]
 #'
+#' @return
+#' An object of class `spark_jobj` and `shell_jobj`.
+#'
 #' @export
 get_table <- function(sc, table, database = NULL) {
   check_character_one(table)
@@ -177,29 +180,53 @@ list_tables <- function(sc, database = NULL) {
   sparklyr::collect(tables)
 }
 
-#' Refresh a Table
+#' Refreshing Data
 #'
-#' Invalidates and refreshes all the cached data and metadata of the given
-#' table. For performance reasons, Spark SQL or the external data source library
-#' it uses might cache certain metadata about a table, such as the location of
-#' blocks. When those change outside of Spark SQL, users should call this
-#' function to invalidate the cache. If this table is cached as an
-#' `InMemoryRelation`, drop the original cached version and make the new version
-#' cached lazily.
+#' * `recover_partitions()`: Recovers all the partitions in the directory of a
+#' table and update the catalog. This only works for partitioned tables and not
+#' un-partitioned tables or views.
+#' * `refresh_by_path()`: Invalidates and refreshes all the cached data (and the
+#' associated metadata) for any Dataset that contains the given data source
+#' path. Path matching is by prefix, i.e. "/" would invalidate everything that
+#' is cached.
+#' * `refresh_table()`: Invalidates and refreshes all the cached data and
+#' metadata of the given table. For performance reasons, Spark SQL or the
+#' external data source library it uses might cache certain metadata about a
+#' table, such as the location of blocks. When those change outside of Spark
+#' SQL, users should call this function to invalidate the cache. If this table
+#' is cached as an `InMemoryRelation`, drop the original cached version and make
+#' the new version cached lazily.
 #'
-#' @inheritParams get_table
+#' @param sc A `spark_connection`.
+#' @param table `character(1)`. The name of the table.
+#'
+#' @return
+#' `NULL`, invisibly. These functions are mostly called for their side effects.
 #'
 #' @seealso
 #' [cache_table()], [create_table()], [get_table()], [list_tables()],
 #' [table_exists()], [uncache_table()]
 #'
-#' @return
-#' `NULL`
-#'
+#' @name refresh
+#' @export
+recover_partitions <- function(sc, table) {
+  check_character_one(x = table)
+  invisible(invoke_catalog(sc = sc, method = "recoverPartitions", table))
+}
+
+#' @param path `character(1)`. The path to refresh.
+#' @rdname refresh
+#' @export
+refresh_by_path <- function(sc, path) {
+  check_character_one(x = path)
+  invisible(invoke_catalog(sc = sc, method = "refreshByPath", path))
+}
+
+#' @rdname refresh
 #' @export
 refresh_table <- function(sc, table) {
   check_character_one(table)
-  invoke_catalog(sc = sc, method = "refreshTable", table)
+  invisible(invoke_catalog(sc = sc, method = "refreshTable", table))
 }
 
 #' Check If A Table Exists

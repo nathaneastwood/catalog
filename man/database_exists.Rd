@@ -13,8 +13,6 @@ database_exists(sc, name)
 database to.}
 }
 \value{
-\code{character(1)}, the current database name.
-
 A \code{logical(1)} vector indicating \code{TRUE} if the database exists and \code{FALSE}
 otherwise.
 }

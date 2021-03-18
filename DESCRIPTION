@@ -1,11 +1,11 @@
 Package: catalog
 Type: Package
-Title: Access the Spark Catalog API via 'sparklyr'
+Title: Access the 'Spark Catalog' API via 'sparklyr'
 Version: 0.1.0
 Authors@R: person("Nathan", "Eastwood", "", "nathan.eastwood@icloud.com",
     role = c("aut", "cre"))
 Maintainer: Nathan Eastwood <nathan.eastwood@icloud.com>
-Description: Gain access to the Spark Catalog API making use of the 'sparklyr' API. Catalog is the interface for managing a metastore (aka metadata catalog) of relational entities (e.g. database(s), tables, functions, table columns and temporary views).
+Description: Gain access to the 'Spark Catalog' API making use of the 'sparklyr' API. 'Catalog' <https://spark.apache.org/docs/2.4.3/api/java/org/apache/spark/sql/catalog/Catalog.html> is the interface for managing a metastore (aka metadata catalog) of relational entities (e.g. database(s), tables, functions, table columns and temporary views).
 URL: https://nathaneastwood.github.io/catalog/, https://github.com/nathaneastwood/catalog
 BugReports: https://github.com/nathaneastwood/catalog/issues
 Depends: R (>= 3.5)

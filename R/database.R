@@ -33,9 +33,6 @@ current_database <- function(sc) {
 #' @param name `character(1)`. The name of the database to set the current
 #' database to.
 #'
-#' @return
-#' `character(1)`, the current database name.
-#'
 #' @examples
 #' \dontrun{
 #' sc <- sparklyr::spark_connect(master = "local")
