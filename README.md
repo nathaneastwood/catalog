@@ -28,6 +28,12 @@ You can install:
 remotes::install_github("nathaneastwood/catalog")
 ```
 
+-   the latest release from CRAN with
+
+``` r
+install.packages("catalog")
+```
+
 ## Usage
 
 {catalog} provides an API matching that of the Catalog API and provides
