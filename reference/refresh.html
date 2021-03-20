@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Cache And Uncache Tables — cache_table • catalog</title>
+<title>Refreshing Data — refresh • catalog</title>
 
 
 <!-- jquery -->
@@ -39,13 +39,25 @@
 
 
 
-<meta property="og:title" content="Cache And Uncache Tables — cache_table" />
-<meta property="og:description" content="Spark SQL can cache tables using an in-memory columnar format by calling
-cache_table(). Spark SQL will scan only required columns and will
-automatically tune compression to minimize memory usage and GC pressure.
-You can call uncache_table() to remove the table from memory. Similarly you
-can call clear_cache() to remove all cached tables from the in-memory
-cache. Finally, use is_cached() to test whether or not a table is cached." />
+<meta property="og:title" content="Refreshing Data — refresh" />
+<meta property="og:description" content="
+
+recover_partitions(): Recovers all the partitions in the directory of a
+table and update the catalog. This only works for partitioned tables and not
+un-partitioned tables or views.
+refresh_by_path(): Invalidates and refreshes all the cached data (and the
+associated metadata) for any Dataset that contains the given data source
+path. Path matching is by prefix, i.e. &quot;/&quot; would invalidate everything that
+is cached.
+refresh_table(): Invalidates and refreshes all the cached data and
+metadata of the given table. For performance reasons, Spark SQL or the
+external data source library it uses might cache certain metadata about a
+table, such as the location of blocks. When those change outside of Spark
+SQL, users should call this function to invalidate the cache. If this table
+is cached as an InMemoryRelation, drop the original cached version and make
+the new version cached lazily.
+
+" />
 
 
 
@@ -124,27 +136,37 @@ cache. Finally, use is_cached() to test whether or not a table is cached." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Cache And Uncache Tables</h1>
+    <h1>Refreshing Data</h1>
     <small class="dont-index">Source: <a href='https://github.com/nathaneastwood/catalog/blob/master/R/tables.R'><code>R/tables.R</code></a></small>
-    <div class="hidden name"><code>cache_table.Rd</code></div>
+    <div class="hidden name"><code>refresh.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Spark SQL can cache tables using an in-memory columnar format by calling
-<code>cache_table()</code>. Spark SQL will scan only required columns and will
-automatically tune compression to minimize memory usage and GC pressure.
-You can call <code>uncache_table()</code> to remove the table from memory. Similarly you
-can call <code>clear_cache()</code> to remove all cached tables from the in-memory
-cache. Finally, use <code>is_cached()</code> to test whether or not a table is cached.</p>
+    
+<ul>
+<li><p><code>recover_partitions()</code>: Recovers all the partitions in the directory of a
+table and update the catalog. This only works for partitioned tables and not
+un-partitioned tables or views.</p></li>
+<li><p><code>refresh_by_path()</code>: Invalidates and refreshes all the cached data (and the
+associated metadata) for any Dataset that contains the given data source
+path. Path matching is by prefix, i.e. "/" would invalidate everything that
+is cached.</p></li>
+<li><p><code>refresh_table()</code>: Invalidates and refreshes all the cached data and
+metadata of the given table. For performance reasons, Spark SQL or the
+external data source library it uses might cache certain metadata about a
+table, such as the location of blocks. When those change outside of Spark
+SQL, users should call this function to invalidate the cache. If this table
+is cached as an <code>InMemoryRelation</code>, drop the original cached version and make
+the new version cached lazily.</p></li>
+</ul>
+
     </div>
 
-    <pre class="usage"><span class='fu'>cache_table</span><span class='op'>(</span><span class='va'>sc</span>, <span class='va'>table</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>recover_partitions</span><span class='op'>(</span><span class='va'>sc</span>, <span class='va'>table</span><span class='op'>)</span>
 
-<span class='fu'>clear_cache</span><span class='op'>(</span><span class='va'>sc</span><span class='op'>)</span>
+<span class='fu'>refresh_by_path</span><span class='op'>(</span><span class='va'>sc</span>, <span class='va'>path</span><span class='op'>)</span>
 
-<span class='fu'>is_cached</span><span class='op'>(</span><span class='va'>sc</span>, <span class='va'>table</span><span class='op'>)</span>
-
-<span class='fu'>uncache_table</span><span class='op'>(</span><span class='va'>sc</span>, <span class='va'>table</span><span class='op'>)</span></pre>
+<span class='fu'>refresh_table</span><span class='op'>(</span><span class='va'>sc</span>, <span class='va'>table</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -157,52 +179,20 @@ cache. Finally, use <code>is_cached()</code> to test whether or not a table is c
       <th>table</th>
       <td><p><code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code>. The name of the table.</p></td>
     </tr>
+    <tr>
+      <th>path</th>
+      <td><p><code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code>. The path to refresh.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    
-<ul>
-<li><p><code>cache_table()</code>: If successful, <code>TRUE</code>, otherwise <code>FALSE</code>.</p></li>
-</ul>
-
-<ul>
-<li><p><code>clear_cache()</code>: <code>NULL</code>, invisibly.</p></li>
-</ul>
-
-<ul>
-<li><p><code>is_cached()</code>: A <code><a href='https://rdrr.io/r/base/logical.html'>logical(1)</a></code> vector indicating <code>TRUE</code> if the table is
-cached and <code>FALSE</code> otherwise.</p></li>
-</ul>
-
-<ul>
-<li><p><code>uncache_table()</code>: <code>NULL</code>, invisibly.</p></li>
-</ul>
-
+    <p><code>NULL</code>, invisibly. These functions are mostly called for their side effects.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='create_table.html'>create_table()</a></code>, <code><a href='get_table.html'>get_table()</a></code>, <code><a href='list_tables.html'>list_tables()</a></code>, <code><a href='refresh.html'>refresh_table()</a></code>,
-<code><a href='table_exists.html'>table_exists()</a></code>, <code>uncache_table()</code></p></div>
+    <div class='dont-index'><p><code><a href='cache_table.html'>cache_table()</a></code>, <code><a href='create_table.html'>create_table()</a></code>, <code><a href='get_table.html'>get_table()</a></code>, <code><a href='list_tables.html'>list_tables()</a></code>,
+<code><a href='table_exists.html'>table_exists()</a></code>, <code><a href='cache_table.html'>uncache_table()</a></code></p></div>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-<span class='va'>sc</span> <span class='op'>&lt;-</span> <span class='fu'>sparklyr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/sparklyr/man/spark-connections.html'>spark_connect</a></span><span class='op'>(</span>master <span class='op'>=</span> <span class='st'>"local"</span><span class='op'>)</span>
-<span class='va'>mtcars_spark</span> <span class='op'>&lt;-</span> <span class='fu'>sparklyr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/sparklyr/man/copy_to.html'>copy_to</a></span><span class='op'>(</span>dest <span class='op'>=</span> <span class='va'>sc</span>, df <span class='op'>=</span> <span class='va'>mtcars</span><span class='op'>)</span>
-
-<span class='co'># By default the table is not cached</span>
-<span class='fu'>is_cached</span><span class='op'>(</span>sc <span class='op'>=</span> <span class='va'>sc</span>, table <span class='op'>=</span> <span class='st'>"mtcars"</span><span class='op'>)</span>
-
-<span class='co'># We can manually cache the table</span>
-<span class='fu'>cache_table</span><span class='op'>(</span>sc <span class='op'>=</span> <span class='va'>sc</span>, table <span class='op'>=</span> <span class='st'>"mtcars"</span><span class='op'>)</span>
-<span class='co'># And now the table is cached</span>
-<span class='fu'>is_cached</span><span class='op'>(</span>sc <span class='op'>=</span> <span class='va'>sc</span>, table <span class='op'>=</span> <span class='st'>"mtcars"</span><span class='op'>)</span>
-
-<span class='co'># We can uncache the table</span>
-<span class='fu'>uncache_table</span><span class='op'>(</span>sc <span class='op'>=</span> <span class='va'>sc</span>, table <span class='op'>=</span> <span class='st'>"mtcars"</span><span class='op'>)</span>
-<span class='fu'>is_cached</span><span class='op'>(</span>sc <span class='op'>=</span> <span class='va'>sc</span>, table <span class='op'>=</span> <span class='st'>"mtcars"</span><span class='op'>)</span>
-<span class='op'>}</span>
-
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
