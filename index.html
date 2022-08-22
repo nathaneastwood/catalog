@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">catalog</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.1</span>
       </span>
     </div>
 
@@ -39,20 +41,20 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="index.html">
-    <span class="fas fa-home"></span>
+    <span class="fa fa-home"></span>
      
   </a>
 </li>
 <li>
   <a href="news/index.html">
-    <span class="fas fa-newspaper-o"></span>
+    <span class="fa fa-newspaper-o"></span>
      
     News
   </a>
 </li>
 <li>
   <a href="reference/index.html">
-    <span class="fas fa-file-code-o"></span>
+    <span class="fa fa-file-code-o"></span>
      
     Functions
   </a>
@@ -60,7 +62,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/nathaneastwood/catalog/">
+  <a href="https://github.com/nathaneastwood/catalog/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -77,135 +79,135 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="catalog" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#catalog" class="anchor"></a>{catalog}</h1></div>
+<div class="section level1">
+<div class="page-header"><h1 id="catalog">{catalog}<a class="anchor" aria-label="anchor" href="#catalog"></a>
+</h1></div>
 
-<div id="overview" class="section level2">
-<h2 class="hasAnchor">
-<a href="#overview" class="anchor"></a>Overview</h2>
-<p>{catalog} gives the user access to the Spark <a href="https://spark.apache.org/docs/2.4.3/api/java/org/apache/spark/sql/catalog/Catalog.html">Catalog</a> API making use of the <a href="https://sparklyr.ai">{sparklyr}</a> API. Catalog is the interface for managing a metastore (aka metadata catalog) of relational entities (e.g. database(s), tables, functions, table columns and temporary views).</p>
+<div class="section level2">
+<h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
+</h2>
+<p>{catalog} gives the user access to the Spark <a href="https://spark.apache.org/docs/2.4.3/api/java/org/apache/spark/sql/catalog/Catalog.html" class="external-link">Catalog</a> API making use of the <a href="https://sparklyr.ai" class="external-link">{sparklyr}</a> API. Catalog is the interface for managing a metastore (aka metadata catalog) of relational entities (e.g. database(s), tables, functions, table columns and temporary views).</p>
 </div>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
 <p>You can install:</p>
-<ul>
-<li>the development version from <a href="https://github.com/nathaneastwood/catalog">GitHub</a> with</li>
-</ul>
+<ul><li>the development version from <a href="https://github.com/nathaneastwood/catalog" class="external-link">GitHub</a> with</li></ul>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># install.packages("remotes")</span>
-<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"nathaneastwood/catalog"</span><span class="op">)</span></code></pre></div>
-<ul>
-<li>the latest release from CRAN with</li>
-</ul>
+<code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"nathaneastwood/catalog"</span><span class="op">)</span></span></code></pre></div>
+<ul><li>the latest release from CRAN with</li></ul>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"catalog"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"catalog"</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="usage" class="section level2">
-<h2 class="hasAnchor">
-<a href="#usage" class="anchor"></a>Usage</h2>
+<div class="section level2">
+<h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
+</h2>
 <p>{catalog} provides an API matching that of the Catalog API and provides full access to all methods. Below is a small example of some of the functionality.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">sc</span> <span class="op">&lt;-</span> <span class="fu">sparklyr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sparklyr/man/spark-connections.html">spark_connect</a></span><span class="op">(</span>master <span class="op">=</span> <span class="st">"local"</span><span class="op">)</span>
-<span class="va">mtcars_spark</span> <span class="op">&lt;-</span> <span class="fu">sparklyr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sparklyr/man/copy_to.html">copy_to</a></span><span class="op">(</span>dest <span class="op">=</span> <span class="va">sc</span>, df <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span>
-
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://nathaneastwood.github.io/catalog/">catalog</a></span><span class="op">)</span>
-
-<span class="fu"><a href="reference/list_tables.html">list_tables</a></span><span class="op">(</span><span class="va">sc</span><span class="op">)</span>
-<span class="co"># # A tibble: 1 x 5</span>
-<span class="co">#   name   database description tableType isTemporary</span>
-<span class="co">#   &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;       &lt;chr&gt;     &lt;lgl&gt;      </span>
-<span class="co"># 1 mtcars &lt;NA&gt;     &lt;NA&gt;        TEMPORARY TRUE</span>
-
-<span class="fu"><a href="reference/list_columns.html">list_columns</a></span><span class="op">(</span><span class="va">sc</span>, <span class="st">"mtcars"</span><span class="op">)</span>
-<span class="co"># # A tibble: 11 x 6</span>
-<span class="co">#    name  description dataType nullable isPartition isBucket</span>
-<span class="co">#    &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;    &lt;lgl&gt;    &lt;lgl&gt;       &lt;lgl&gt;   </span>
-<span class="co">#  1 mpg   &lt;NA&gt;        double   TRUE     FALSE       FALSE   </span>
-<span class="co">#  2 cyl   &lt;NA&gt;        double   TRUE     FALSE       FALSE   </span>
-<span class="co">#  3 disp  &lt;NA&gt;        double   TRUE     FALSE       FALSE   </span>
-<span class="co">#  4 hp    &lt;NA&gt;        double   TRUE     FALSE       FALSE   </span>
-<span class="co">#  5 drat  &lt;NA&gt;        double   TRUE     FALSE       FALSE   </span>
-<span class="co">#  6 wt    &lt;NA&gt;        double   TRUE     FALSE       FALSE   </span>
-<span class="co">#  7 qsec  &lt;NA&gt;        double   TRUE     FALSE       FALSE   </span>
-<span class="co">#  8 vs    &lt;NA&gt;        double   TRUE     FALSE       FALSE   </span>
-<span class="co">#  9 am    &lt;NA&gt;        double   TRUE     FALSE       FALSE   </span>
-<span class="co"># 10 gear  &lt;NA&gt;        double   TRUE     FALSE       FALSE   </span>
-<span class="co"># 11 carb  &lt;NA&gt;        double   TRUE     FALSE       FALSE</span>
-
-<span class="fu"><a href="reference/list_functions.html">list_functions</a></span><span class="op">(</span><span class="va">sc</span><span class="op">)</span>
-<span class="co"># # A tibble: 298 x 5</span>
-<span class="co">#    name  database description className                              isTemporary</span>
-<span class="co">#    &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;       &lt;chr&gt;                                  &lt;lgl&gt;      </span>
-<span class="co">#  1 !     &lt;NA&gt;     &lt;NA&gt;        org.apache.spark.sql.catalyst.express… TRUE       </span>
-<span class="co">#  2 %     &lt;NA&gt;     &lt;NA&gt;        org.apache.spark.sql.catalyst.express… TRUE       </span>
-<span class="co">#  3 &amp;     &lt;NA&gt;     &lt;NA&gt;        org.apache.spark.sql.catalyst.express… TRUE       </span>
-<span class="co">#  4 *     &lt;NA&gt;     &lt;NA&gt;        org.apache.spark.sql.catalyst.express… TRUE       </span>
-<span class="co">#  5 +     &lt;NA&gt;     &lt;NA&gt;        org.apache.spark.sql.catalyst.express… TRUE       </span>
-<span class="co">#  6 -     &lt;NA&gt;     &lt;NA&gt;        org.apache.spark.sql.catalyst.express… TRUE       </span>
-<span class="co">#  7 /     &lt;NA&gt;     &lt;NA&gt;        org.apache.spark.sql.catalyst.express… TRUE       </span>
-<span class="co">#  8 &lt;     &lt;NA&gt;     &lt;NA&gt;        org.apache.spark.sql.catalyst.express… TRUE       </span>
-<span class="co">#  9 &lt;=    &lt;NA&gt;     &lt;NA&gt;        org.apache.spark.sql.catalyst.express… TRUE       </span>
-<span class="co"># 10 &lt;=&gt;   &lt;NA&gt;     &lt;NA&gt;        org.apache.spark.sql.catalyst.express… TRUE       </span>
-<span class="co"># # … with 288 more rows</span>
-
-<span class="fu"><a href="reference/drop_global_temp_view.html">drop_temp_view</a></span><span class="op">(</span><span class="va">sc</span>, <span class="st">"mtcars"</span><span class="op">)</span>
-<span class="co"># [1] TRUE</span></code></pre></div>
-<p>For more information, please refer to the <a href="https://nathaneastwood.github.io/catalog/">package website</a>.</p>
+<code class="sourceCode R"><span><span class="va">sc</span> <span class="op">&lt;-</span> <span class="fu">sparklyr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sparklyr/man/spark-connections.html" class="external-link">spark_connect</a></span><span class="op">(</span>master <span class="op">=</span> <span class="st">"local"</span><span class="op">)</span></span>
+<span><span class="va">mtcars_spark</span> <span class="op">&lt;-</span> <span class="fu">sparklyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/copy_to.html" class="external-link">copy_to</a></span><span class="op">(</span>dest <span class="op">=</span> <span class="va">sc</span>, df <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nathaneastwood.github.io/catalog/" class="external-link">catalog</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="reference/list_tables.html">list_tables</a></span><span class="op">(</span><span class="va">sc</span><span class="op">)</span></span>
+<span><span class="co"># # A tibble: 1 x 5</span></span>
+<span><span class="co">#   name   database description tableType isTemporary</span></span>
+<span><span class="co">#   &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;       &lt;chr&gt;     &lt;lgl&gt;      </span></span>
+<span><span class="co"># 1 mtcars &lt;NA&gt;     &lt;NA&gt;        TEMPORARY TRUE</span></span>
+<span></span>
+<span><span class="fu"><a href="reference/list_columns.html">list_columns</a></span><span class="op">(</span><span class="va">sc</span>, <span class="st">"mtcars"</span><span class="op">)</span></span>
+<span><span class="co"># # A tibble: 11 x 6</span></span>
+<span><span class="co">#    name  description dataType nullable isPartition isBucket</span></span>
+<span><span class="co">#    &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;    &lt;lgl&gt;    &lt;lgl&gt;       &lt;lgl&gt;   </span></span>
+<span><span class="co">#  1 mpg   &lt;NA&gt;        double   TRUE     FALSE       FALSE   </span></span>
+<span><span class="co">#  2 cyl   &lt;NA&gt;        double   TRUE     FALSE       FALSE   </span></span>
+<span><span class="co">#  3 disp  &lt;NA&gt;        double   TRUE     FALSE       FALSE   </span></span>
+<span><span class="co">#  4 hp    &lt;NA&gt;        double   TRUE     FALSE       FALSE   </span></span>
+<span><span class="co">#  5 drat  &lt;NA&gt;        double   TRUE     FALSE       FALSE   </span></span>
+<span><span class="co">#  6 wt    &lt;NA&gt;        double   TRUE     FALSE       FALSE   </span></span>
+<span><span class="co">#  7 qsec  &lt;NA&gt;        double   TRUE     FALSE       FALSE   </span></span>
+<span><span class="co">#  8 vs    &lt;NA&gt;        double   TRUE     FALSE       FALSE   </span></span>
+<span><span class="co">#  9 am    &lt;NA&gt;        double   TRUE     FALSE       FALSE   </span></span>
+<span><span class="co"># 10 gear  &lt;NA&gt;        double   TRUE     FALSE       FALSE   </span></span>
+<span><span class="co"># 11 carb  &lt;NA&gt;        double   TRUE     FALSE       FALSE</span></span>
+<span></span>
+<span><span class="fu"><a href="reference/list_functions.html">list_functions</a></span><span class="op">(</span><span class="va">sc</span><span class="op">)</span></span>
+<span><span class="co"># # A tibble: 298 x 5</span></span>
+<span><span class="co">#    name  database description className                              isTemporary</span></span>
+<span><span class="co">#    &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;       &lt;chr&gt;                                  &lt;lgl&gt;      </span></span>
+<span><span class="co">#  1 !     &lt;NA&gt;     &lt;NA&gt;        org.apache.spark.sql.catalyst.express… TRUE       </span></span>
+<span><span class="co">#  2 %     &lt;NA&gt;     &lt;NA&gt;        org.apache.spark.sql.catalyst.express… TRUE       </span></span>
+<span><span class="co">#  3 &amp;     &lt;NA&gt;     &lt;NA&gt;        org.apache.spark.sql.catalyst.express… TRUE       </span></span>
+<span><span class="co">#  4 *     &lt;NA&gt;     &lt;NA&gt;        org.apache.spark.sql.catalyst.express… TRUE       </span></span>
+<span><span class="co">#  5 +     &lt;NA&gt;     &lt;NA&gt;        org.apache.spark.sql.catalyst.express… TRUE       </span></span>
+<span><span class="co">#  6 -     &lt;NA&gt;     &lt;NA&gt;        org.apache.spark.sql.catalyst.express… TRUE       </span></span>
+<span><span class="co">#  7 /     &lt;NA&gt;     &lt;NA&gt;        org.apache.spark.sql.catalyst.express… TRUE       </span></span>
+<span><span class="co">#  8 &lt;     &lt;NA&gt;     &lt;NA&gt;        org.apache.spark.sql.catalyst.express… TRUE       </span></span>
+<span><span class="co">#  9 &lt;=    &lt;NA&gt;     &lt;NA&gt;        org.apache.spark.sql.catalyst.express… TRUE       </span></span>
+<span><span class="co"># 10 &lt;=&gt;   &lt;NA&gt;     &lt;NA&gt;        org.apache.spark.sql.catalyst.express… TRUE       </span></span>
+<span><span class="co"># # … with 288 more rows</span></span>
+<span></span>
+<span><span class="fu"><a href="reference/drop_global_temp_view.html">drop_temp_view</a></span><span class="op">(</span><span class="va">sc</span>, <span class="st">"mtcars"</span><span class="op">)</span></span>
+<span><span class="co"># [1] TRUE</span></span></code></pre></div>
+<p>For more information, please refer to the <a href="https://nathaneastwood.github.io/catalog/" class="external-link">package website</a>.</p>
 </div>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=catalog">https://​cloud.r-project.org/​package=catalog</a>
-</li>
-<li>Browse source code at <br><a href="https://github.com/nathaneastwood/catalog/">https://​github.com/​nathaneastwood/​catalog/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/nathaneastwood/catalog/issues">https://​github.com/​nathaneastwood/​catalog/​issues</a>
-</li>
+<li><a href="https://cloud.r-project.org/package=catalog" class="external-link">View on CRAN</a></li>
+<li><a href="https://github.com/nathaneastwood/catalog/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/nathaneastwood/catalog/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li>GPL (&gt;= 2)</li>
 </ul>
 </div>
-<div class="community">
-<h2>Community</h2>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
 <ul class="list-unstyled">
-<li><a href="CONTRIBUTING.html">Contributing guide</a></li>
-</ul>
-</div>
-<div class="developers">
-<h2>Developers</h2>
-<ul class="list-unstyled">
-<li>
-<a href="https://nathaneastwood.github.io">Nathan Eastwood</a> <br><small class="roles"> Author, maintainer </small>  </li>
+<li><a href="authors.html#citation">Citing catalog</a></li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="developers">
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li><a href="https://cran.r-project.org/package=catalog"><img src="https://www.r-pkg.org/badges/version/catalog" alt="CRAN status"></a></li>
-<li><a href="https://cran.r-project.org/package=catalog"><img src="https://tinyverse.netlify.com/badge/catalog" alt="Dependencies"></a></li>
+<li>
+<a href="https://nathaneastwood.github.io" class="external-link">Nathan Eastwood</a> <br><small class="roles"> Author, maintainer </small>  </li>
 </ul>
 </div>
+
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://cran.r-project.org/package=catalog" class="external-link"><img src="https://www.r-pkg.org/badges/version/catalog" alt="CRAN status"></a></li>
+<li><a href="https://cran.r-project.org/package=catalog" class="external-link"><img src="https://tinyverse.netlify.com/badge/catalog" alt="Dependencies"></a></li>
+</ul>
 </div>
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by <a href="https://nathaneastwood.github.io">Nathan Eastwood</a>.</p>
+  <p></p>
+<p>Developed by <a href="https://nathaneastwood.github.io" class="external-link">Nathan Eastwood</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>
@@ -213,6 +215,8 @@
 
   
 
+
+  
 
   </body>
 </html>
