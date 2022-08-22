@@ -15,7 +15,6 @@ Imports:
 Suggests:
     DBI,
     knitr,
-    pkgdown,
     rmarkdown,
     roxygen2,
     tinytest
