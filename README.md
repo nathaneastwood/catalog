@@ -47,13 +47,13 @@ mtcars_spark <- sparklyr::copy_to(dest = sc, df = mtcars)
 library(catalog)
 
 list_tables(sc)
-# # A tibble: 1 x 5
+# # A tibble: 1 × 5
 #   name   database description tableType isTemporary
 #   <chr>  <chr>    <chr>       <chr>     <lgl>      
 # 1 mtcars <NA>     <NA>        TEMPORARY TRUE
 
 list_columns(sc, "mtcars")
-# # A tibble: 11 x 6
+# # A tibble: 11 × 6
 #    name  description dataType nullable isPartition isBucket
 #    <chr> <chr>       <chr>    <lgl>    <lgl>       <lgl>   
 #  1 mpg   <NA>        double   TRUE     FALSE       FALSE   
@@ -69,20 +69,21 @@ list_columns(sc, "mtcars")
 # 11 carb  <NA>        double   TRUE     FALSE       FALSE
 
 list_functions(sc)
-# # A tibble: 298 x 5
-#    name  database description className                              isTemporary
-#    <chr> <chr>    <chr>       <chr>                                  <lgl>      
-#  1 !     <NA>     <NA>        org.apache.spark.sql.catalyst.express… TRUE       
-#  2 %     <NA>     <NA>        org.apache.spark.sql.catalyst.express… TRUE       
-#  3 &     <NA>     <NA>        org.apache.spark.sql.catalyst.express… TRUE       
-#  4 *     <NA>     <NA>        org.apache.spark.sql.catalyst.express… TRUE       
-#  5 +     <NA>     <NA>        org.apache.spark.sql.catalyst.express… TRUE       
-#  6 -     <NA>     <NA>        org.apache.spark.sql.catalyst.express… TRUE       
-#  7 /     <NA>     <NA>        org.apache.spark.sql.catalyst.express… TRUE       
-#  8 <     <NA>     <NA>        org.apache.spark.sql.catalyst.express… TRUE       
-#  9 <=    <NA>     <NA>        org.apache.spark.sql.catalyst.express… TRUE       
-# 10 <=>   <NA>     <NA>        org.apache.spark.sql.catalyst.express… TRUE       
-# # … with 288 more rows
+# # A tibble: 349 × 5
+#    name  database description className                                  isTem…¹
+#    <chr> <chr>    <chr>       <chr>                                      <lgl>  
+#  1 !     <NA>     <NA>        org.apache.spark.sql.catalyst.expressions… TRUE   
+#  2 %     <NA>     <NA>        org.apache.spark.sql.catalyst.expressions… TRUE   
+#  3 &     <NA>     <NA>        org.apache.spark.sql.catalyst.expressions… TRUE   
+#  4 *     <NA>     <NA>        org.apache.spark.sql.catalyst.expressions… TRUE   
+#  5 +     <NA>     <NA>        org.apache.spark.sql.catalyst.expressions… TRUE   
+#  6 -     <NA>     <NA>        org.apache.spark.sql.catalyst.expressions… TRUE   
+#  7 /     <NA>     <NA>        org.apache.spark.sql.catalyst.expressions… TRUE   
+#  8 <     <NA>     <NA>        org.apache.spark.sql.catalyst.expressions… TRUE   
+#  9 <=    <NA>     <NA>        org.apache.spark.sql.catalyst.expressions… TRUE   
+# 10 <=>   <NA>     <NA>        org.apache.spark.sql.catalyst.expressions… TRUE   
+# # … with 339 more rows, and abbreviated variable name ¹​isTemporary
+# # ℹ Use `print(n = ...)` to see more rows
 
 drop_temp_view(sc, "mtcars")
 # [1] TRUE
