@@ -30,7 +30,9 @@ that is in the \code{path} parameter.
 The default data source type is parquet.
 This can be changed using \code{source} or setting the configuration option
 \code{spark.sql.sources.default} when creating the spark session using or after
-you have created the session using\if{html}{\out{<div class="r">}}\preformatted{config <- sparklyr::spark_config()
+you have created the session using
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{config <- sparklyr::spark_config()
 config[["spark.sql.sources.default"]] <- "csv"
 }\if{html}{\out{</div>}}
 }
